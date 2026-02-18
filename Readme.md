@@ -9,8 +9,9 @@
 ### 刷砖也不怕！可以通过串口救砖：[MediaTek Filogic 系列路由器串口救砖教程](https://www.cnblogs.com/p123/p/18046679)
 
 ### 我的刷机教程：[Tutorial](https://github.com/lgs2007m/Actions-OpenWrt/tree/main/Tutorial)
+### 包含教程的刷机文件：[Router-Flashing-Files](https://github.com/lgs2007m/Actions-OpenWrt/releases/tag/Router-Flashing-Files)
 ---
-## JDCloud-AX6000-Baili workflow 手动运行可选项：
+## MT7986 hanwckf workflow 手动运行可选项：
 <details>
 <summary>展开详细</summary>
 
@@ -22,10 +23,11 @@
 - [ ] Not build luci-app-dockerman
 
 - #### 说明
-源码中的WAN、LAN地址顺序已修复并固定了WiFi MAC地址，交换机驱动已改为使用GSW  
+百里源码中的WAN、LAN地址顺序已修复并固定了WiFi MAC地址，交换机驱动已改为使用GSW。  
+储留箱S20P可同时编译DSA和GSW两种交换机驱动的固件，不用选择。  
 
 - #### 1. Select Source Branch
-默认使用 [lgs2007m/immortalwrt-mt798x](https://github.com/lgs2007m/immortalwrt-mt798x) 的v7672分支，该分支支持mt_wifi v7.6.7.2和v7.6.6.1，conninfra datconf warp使用v7.6.7.2版本配套的；v7661分支也支持mt_wifi v7.6.7.2和v7.6.6.1，conninfra datconf warp改为v7.6.6.1版本配套的旧版。v7.6.7.3版本驱动听说有问题，未测试，观望中。  
+默认使用 [lgs2007m/immortalwrt-mt798x](https://github.com/lgs2007m/immortalwrt-mt798x) 的 [v7672](https://github.com/lgs2007m/immortalwrt-mt798x/tree/v7672) 分支，该分支支持mt_wifi v7.6.7.2和v7.6.6.1，conninfra datconf warp使用v7.6.7.2版本配套的； [v7661](https://github.com/lgs2007m/immortalwrt-mt798x/tree/v7671) 分支也支持mt_wifi v7.6.7.2和v7.6.6.1，conninfra datconf warp改为v7.6.6.1版本配套的旧版。v7.6.7.3版本驱动听说有问题，未测试，观望中。  
 
 - #### 2. Set LAN IP Address
 设置LAN IP地址（路由器登录地址），默认192.168.1.1。  
@@ -66,7 +68,7 @@ cat /proc/warp_ctrl/warp0/wo
 ```
 
 - #### 4. Choose Switch Driver
-默认使用GSW交换机驱动，可选DSA交换机驱动。  
+该选项为百里专用，默认使用GSW交换机驱动，可选DSA交换机驱动。  
 GSW：Gigabit Switch swconfig 模式，有交换机配置插件，不过京东云百里AX6000的WAN是单独接CPU的2.5G PHY RTL8221B，不接在MT7531交换机上，所以WAN不支持在交换机配置插件中设置VLAN。  
 DSA：Distributed Switch Architecture 分布式交换架构模式，DSA没有单独的交换机配置插件，但在“网口”-“接口”-“设备”选项卡中的br-lan设备中的网桥VLAN过滤中可以查看网口状态设置VLAN。  
 百里原厂固件使用的是DSA，hanwckf大佬源码中百里的交换机驱动先前是DSA，听说在WAN、LAN互换时硬件加速可能失效，但是我测试了是正常的。  
@@ -113,10 +115,12 @@ dd if=/tmp/tmp.bin of=/lib/firmware/MT7986_ePAeLNA_EEPROM_AX6000.bin bs=1 seek=$
 dd if=/tmp/tmp.bin of=$(blkid -t PARTLABEL=factory -o device) bs=1 seek=$((0x445)) conv=notrunc
 dd if=$(blkid -t PARTLABEL=factory -o device) of=/tmp/mmcblk0px_factory.bin conv=fsync
 ```
+- #### 储留箱S20P改无线发射功率
+详见刷机文件中的图片。 
 </details>
 
 ---
-## MT7981-eMMC-USB workflow 手动运行可选项：
+## MT7981-eMMC-USB hanwckf workflow 手动运行可选项：
 <details>
 <summary>展开详细</summary>
 
@@ -134,7 +138,7 @@ RAX3000Z增强版（XR30-eMMC）的eMMC默认使用52MHz频率
 BT-R320的eMMC默认使用52MHz频率  
 
 - #### 1. Select Source Branch
-默认使用 [lgs2007m/immortalwrt-mt798x](https://github.com/lgs2007m/immortalwrt-mt798x) 的v7672分支，该分支支持mt_wifi v7.6.7.2和v7.6.6.1，conninfra datconf warp使用v7.6.7.2版本配套的；v7661分支也支持mt_wifi v7.6.7.2和v7.6.6.1，conninfra datconf warp改为v7.6.6.1版本配套的旧版。v7.6.7.3版本驱动听说有问题，未测试，观望中。  
+默认使用 [lgs2007m/immortalwrt-mt798x](https://github.com/lgs2007m/immortalwrt-mt798x) 的 [v7672](https://github.com/lgs2007m/immortalwrt-mt798x/tree/v7672) 分支，该分支支持mt_wifi v7.6.7.2和v7.6.6.1，conninfra datconf warp使用v7.6.7.2版本配套的； [v7661](https://github.com/lgs2007m/immortalwrt-mt798x/tree/v7671) 分支也支持mt_wifi v7.6.7.2和v7.6.6.1，conninfra datconf warp改为v7.6.6.1版本配套的旧版。v7.6.7.3版本驱动听说有问题，未测试，观望中。  
 
 - #### 2. Set LAN IP Address
 设置LAN IP地址（路由器登录地址），默认192.168.1.1。  
